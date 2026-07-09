@@ -192,22 +192,21 @@ you can check them.
 ## Publishing to PyPI
 
 [`.github/workflows/publish.yml`](.github/workflows/publish.yml) publishes the package to
-PyPI whenever you create a **GitHub Release**, using OIDC *trusted publishing* — no API token
-is stored anywhere. One-time setup:
+PyPI whenever you create a **GitHub Release**, authenticating with a PyPI API token. One-time
+setup:
 
-1. **Add a trusted publisher on PyPI.** On [pypi.org](https://pypi.org) (account with 2FA),
-   go to *Your account → Publishing* (or *Add a pending publisher* if the project doesn't
-   exist yet) and fill in:
-   - **PyPI project name:** `receipt-report-generator`
-   - **Owner:** your GitHub user/org
-   - **Repository:** `receipt-report-generator`
-   - **Workflow filename:** `publish.yml`
-   - **Environment:** leave blank (the workflow does not use one)
-2. **Release.** Bump `version` in [`pyproject.toml`](pyproject.toml), then create a GitHub
+1. **Create an API token.** On [pypi.org](https://pypi.org) → *Account settings → API tokens*
+   → *Add API token* (scope "Entire account" for the first upload; you can scope it to the
+   project afterwards).
+2. **Store it as a secret.** Repo → *Settings → Secrets and variables → Actions* → new secret
+   named `PYPI_API_TOKEN` with the token value. Or via CLI:
+   `gh secret set PYPI_API_TOKEN --repo <owner>/<repo>`
+3. **Release.** Bump `version` in [`pyproject.toml`](pyproject.toml), then create a GitHub
    Release (e.g. tag `v1.0.0`). The workflow builds and uploads automatically.
 
-To rehearse first, add TestPyPI as a second trusted publisher and point the action at it with
-`with: repository-url: https://test.pypi.org/legacy/`.
+Prefer no stored token? PyPI also supports OIDC *trusted publishing* — remove the `password:`
+line from the workflow, add `permissions: id-token: write` to the publish job, and register a
+trusted publisher on PyPI (owner, repo, workflow `publish.yml`, no environment).
 
 ## License
 
