@@ -41,6 +41,14 @@ pip install -r requirements.txt
 cp .env.example .env      # then edit .env
 ```
 
+Or install it as a package to get the `receipt-report` command on your PATH:
+
+```bash
+pip install git+https://github.com/<you>/receipt-report-generator.git
+# then, in a directory containing your .env:
+receipt-report --dry-run
+```
+
 ## Configuration
 
 All configuration is via environment variables (read from `.env` locally, or injected by
@@ -48,7 +56,7 @@ your host in the cloud). The most important ones:
 
 | Variable | Description |
 | --- | --- |
-| `MAIL_PROVIDER` | A preset from [`providers.json`](providers.json) (`gmail`, `outlook`, `icloud`, …). Fills in IMAP/SMTP host, port and security. |
+| `MAIL_PROVIDER` | A preset from [`providers.json`](receipt_report/providers.json) (`gmail`, `outlook`, `icloud`, …). Fills in IMAP/SMTP host, port and security. |
 | `IMAP_USER` / `IMAP_PASSWORD` | Mailbox login. Use an **app password** where the provider supports one. |
 | `RECEIPT_SENDER` | Sender address of the receipts. A substring works (e.g. `sl.se`). |
 | `PROCESSED_FOLDER` | Where processed emails are moved (default `Processed/Receipts`, created if missing). |
@@ -65,7 +73,7 @@ See [`.env.example`](.env.example) for the full list.
 
 ## Supported mail servers
 
-Presets live in [`providers.json`](providers.json) and are easy to extend.
+Presets live in [`providers.json`](receipt_report/providers.json) and are easy to extend.
 
 | `MAIL_PROVIDER` | Service | IMAP | SMTP |
 | --- | --- | --- | --- |

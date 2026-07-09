@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "receipt-report-generator"
+version = "1.0.0"
+description = "Turn emailed receipts into a single expense-report PDF (cover summary + indexed appendix)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "David Barton" }]
+keywords = ["imap", "receipts", "pdf", "expense-report", "email", "invoice", "bookkeeping"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: Office/Business :: Financial :: Accounting",
+    "Topic :: Communications :: Email",
+]
+dependencies = [
+    "imap-tools>=1.7.0",
+    "pdfplumber>=0.11.0",
+    "reportlab>=4.1.0",
+    "pypdf>=4.2.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/dbarton1974/receipt-report-generator"
+Repository = "https://github.com/dbarton1974/receipt-report-generator"
+Issues = "https://github.com/dbarton1974/receipt-report-generator/issues"
+
+[project.scripts]
+receipt-report = "receipt_report.main:main"
+
+[tool.setuptools]
+packages = ["receipt_report"]
+
+[tool.setuptools.package-data]
+receipt_report = ["providers.json"]
