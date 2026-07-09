@@ -1,0 +1,93 @@
+{
+  "_comment": "Mail-server presets. Select one with MAIL_PROVIDER=<key>. Any explicit IMAP_HOST/IMAP_PORT/SMTP_HOST/SMTP_PORT/SMTP_SECURITY env var overrides the preset. Add your own provider by extending this file.",
+
+  "gmail": {
+    "label": "Gmail / Google Workspace",
+    "imap_host": "imap.gmail.com",
+    "imap_port": 993,
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 465,
+    "smtp_security": "ssl",
+    "setup": "Enable 2-Step Verification and create an App Password (Google Account > Security > App passwords). Use that 16-char password as IMAP_PASSWORD. IMAP is enabled by default on modern Gmail."
+  },
+
+  "outlook": {
+    "label": "Outlook.com / Hotmail / Live (personal)",
+    "imap_host": "outlook.office365.com",
+    "imap_port": 993,
+    "smtp_host": "smtp-mail.outlook.com",
+    "smtp_port": 587,
+    "smtp_security": "starttls",
+    "setup": "Microsoft is phasing out basic auth for personal accounts; password login may be rejected in favour of OAuth. If it fails, prefer a provider that supports app passwords, or use IMAP OAuth (not covered by this tool)."
+  },
+
+  "office365": {
+    "label": "Microsoft 365 (work / school)",
+    "imap_host": "outlook.office365.com",
+    "imap_port": 993,
+    "smtp_host": "smtp.office365.com",
+    "smtp_port": 587,
+    "smtp_security": "starttls",
+    "setup": "Basic auth is often disabled by the tenant admin. You may need the admin to allow IMAP/SMTP AUTH, or use a mailbox that permits app passwords."
+  },
+
+  "icloud": {
+    "label": "iCloud Mail",
+    "imap_host": "imap.mail.me.com",
+    "imap_port": 993,
+    "smtp_host": "smtp.mail.me.com",
+    "smtp_port": 587,
+    "smtp_security": "starttls",
+    "setup": "Requires an app-specific password (appleid.apple.com > Sign-In and Security > App-Specific Passwords). Use your full @icloud.com address as IMAP_USER."
+  },
+
+  "yahoo": {
+    "label": "Yahoo Mail",
+    "imap_host": "imap.mail.yahoo.com",
+    "imap_port": 993,
+    "smtp_host": "smtp.mail.yahoo.com",
+    "smtp_port": 465,
+    "smtp_security": "ssl",
+    "setup": "Create an app password (Yahoo Account Security > Generate app password) and use it as IMAP_PASSWORD."
+  },
+
+  "fastmail": {
+    "label": "Fastmail",
+    "imap_host": "imap.fastmail.com",
+    "imap_port": 993,
+    "smtp_host": "smtp.fastmail.com",
+    "smtp_port": 465,
+    "smtp_security": "ssl",
+    "setup": "Create an app password (Settings > Privacy & Security > App passwords) scoped to IMAP+SMTP."
+  },
+
+  "gmx": {
+    "label": "GMX",
+    "imap_host": "imap.gmx.com",
+    "imap_port": 993,
+    "smtp_host": "mail.gmx.com",
+    "smtp_port": 465,
+    "smtp_security": "ssl",
+    "setup": "Enable IMAP/POP access in GMX settings, then use your account password (or an app password if you have 2FA)."
+  },
+
+  "zoho": {
+    "label": "Zoho Mail",
+    "imap_host": "imap.zoho.com",
+    "imap_port": 993,
+    "smtp_host": "smtp.zoho.com",
+    "smtp_port": 465,
+    "smtp_security": "ssl",
+    "setup": "Enable IMAP access in Zoho settings and, if 2FA is on, generate an application-specific password."
+  },
+
+  "opensrs": {
+    "label": "OpenSRS / Tucows Hosted Email (hostedemail.com)",
+    "imap_host": "imap.hostedemail.com",
+    "imap_port": 993,
+    "smtp_host": "smtp.hostedemail.com",
+    "smtp_port": 465,
+    "smtp_security": "ssl",
+    "setup": "Use your full email address as IMAP_USER and your mailbox password. Many resellers brand this service under their own domain."
+  }
+}

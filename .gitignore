@@ -1,0 +1,13 @@
+# Secrets
+.env
+
+# Generated PDFs and working files
+output/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/

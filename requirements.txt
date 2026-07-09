@@ -1,0 +1,5 @@
+imap-tools>=1.7.0
+pdfplumber>=0.11.0
+reportlab>=4.1.0
+pypdf>=4.2.0
+python-dotenv>=1.0.0

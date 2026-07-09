@@ -1,0 +1,83 @@
+name: Monthly expense report
+# Runs on the last day of the month; manual runs via workflow_dispatch.
+
+on:
+  # GitHub cron is UTC. 16:00 UTC is ~17:00–18:00 in Central Europe.
+  schedule:
+    - cron: "0 16 28-31 * *"
+  workflow_dispatch:
+    inputs:
+      test_fail:
+        description: "Force a failure to test the failure notification (sends a test email)."
+        type: boolean
+        default: false
+
+concurrency:
+  group: expense-report-monthly
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    env:
+      # --- Mail server: use a preset from providers.json, or set hosts explicitly ---
+      MAIL_PROVIDER: ${{ vars.MAIL_PROVIDER }}
+      IMAP_USER: ${{ secrets.IMAP_USER }}
+      IMAP_PASSWORD: ${{ secrets.IMAP_PASSWORD }}
+      # --- What to collect ---
+      RECEIPT_SENDER: ${{ vars.RECEIPT_SENDER }}
+      INBOX_FOLDER: INBOX
+      PROCESSED_FOLDER: Processed/Receipts
+      OUTPUT_DIR: output
+      # --- Report ---
+      RECIPIENT_NAME: ${{ vars.RECIPIENT_NAME }}
+      CURRENCY: ${{ vars.CURRENCY }}
+      PURPOSE: ${{ vars.PURPOSE }}
+      # --- Delivery / alerts ---
+      ARCHIVE_RECIPIENT: ${{ secrets.ARCHIVE_RECIPIENT }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Test mode – force a failure
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.test_fail }}
+        run: |
+          echo "test_fail=true – forcing a failure to test the notification."
+          exit 1
+
+      - name: Run the report generator
+        run: |
+          # Scheduled runs only do the real work on the last day of the month
+          # (tomorrow is the 1st). Manual runs always execute.
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            if [ "$(date -d tomorrow +%d)" != "01" ]; then
+              echo "Not the last day of the month – skipping."
+              exit 0
+            fi
+          fi
+          python -m receipt_report.main
+
+      - name: Upload PDF artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: expense-report-pdf
+          path: output/*.pdf
+          if-no-files-found: ignore
+          retention-days: 90
+
+      - name: Notify on failure
+        if: failure()
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python -m receipt_report.notify
