@@ -1,5 +1,9 @@
 # receipt-report-generator
 
+[![PyPI version](https://img.shields.io/pypi/v/receipt-report-generator.svg)](https://pypi.org/project/receipt-report-generator/)
+[![Python versions](https://img.shields.io/pypi/pyversions/receipt-report-generator.svg)](https://pypi.org/project/receipt-report-generator/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 Turn receipts that land in your inbox into a single, tidy **expense-report PDF** — a cover
 sheet that summarises every receipt with a running total, followed by each original receipt
 as an indexed appendix. Optionally emails the finished PDF onwards and files the processed
