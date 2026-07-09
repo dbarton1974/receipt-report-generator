@@ -189,6 +189,28 @@ you can check them.
 - The processed-email move happens **after** the PDF is written successfully, so an interrupted
   run never loses receipts.
 
+## Publishing to PyPI
+
+[`.github/workflows/publish.yml`](.github/workflows/publish.yml) publishes the package to
+PyPI whenever you create a **GitHub Release**, using OIDC *trusted publishing* — no API token
+is stored anywhere. One-time setup:
+
+1. **Create the GitHub environment.** Repo → *Settings → Environments → New environment* →
+   name it `pypi`. (An empty environment is fine.)
+2. **Add a trusted publisher on PyPI.** On [pypi.org](https://pypi.org) (account with 2FA),
+   go to *Your projects → Publishing* (or *Add a pending publisher* if the project doesn't
+   exist yet) and fill in:
+   - **PyPI project name:** `receipt-report-generator`
+   - **Owner:** your GitHub user/org
+   - **Repository:** `receipt-report-generator`
+   - **Workflow filename:** `publish.yml`
+   - **Environment:** `pypi`
+3. **Release.** Bump `version` in [`pyproject.toml`](pyproject.toml), then create a GitHub
+   Release (e.g. tag `v1.0.0`). The workflow builds and uploads automatically.
+
+To rehearse first, add TestPyPI as a second trusted publisher and point the action at it with
+`with: repository-url: https://test.pypi.org/legacy/`.
+
 ## License
 
 [MIT](LICENSE)
